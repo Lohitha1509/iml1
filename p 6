@@ -1,0 +1,17 @@
+import numpy as np
+from sklearn.mixture import GaussianMixture
+import matplotlib.pyplot as plt
+
+np.random.seed(42)
+data = np.concatenate([np.random.normal(-5, 1, 300), np.random.normal(5, 1, 700)]).reshape(-1, 1)
+
+gmm = GaussianMixture(n_components=2, random_state=42)
+gmm.fit(data.reshape(-1, 1))
+
+plt.hist(data, bins=50, density=True, alpha=0.5, color='blue')
+x = np.linspace(-10, 10, 1000)
+pdf = np.exp(gmm.score_samples(x.reshape(-1, 1)))
+plt.plot(x, pdf, '-r', label='GMM Fit')
+plt.title('Gaussian Mixture Model using EM')
+plt.legend()
+plt.show()
